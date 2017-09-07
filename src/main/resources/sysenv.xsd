@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://www.99click.com/schema/sysenv"
+           xmlns="http://www.99click.com/schema/sysenv"
+           elementFormDefault="qualified">
+
+
+    <xs:element name="sysenv" type="sysenv_root"/>      <!-- "sysenv" 元素可以使用 type 属性，这个属性的作用是引用要使用的复合类型的名称  -->
+
+    <xs:complexType name="sysenv_root">
+        <xs:all>
+
+            <xs:element name="properties" minOccurs="0">    <!--  设置一些全局属性 -->
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="LocalStateInfo">
+                <xs:complexType>
+                    <xs:attribute name="ip" type="xs:string"/>
+                    <xs:attribute name="onlineFlag" type="xs:boolean"
+                                  default="false"/> <!-- 可选。为元素规定默认值（仅当元素内容是简单类型或 textOnly 时使用）。  -->
+                    <xs:attribute name="dlServerFlag" type="xs:boolean"/>
+                    <xs:attribute name="testFlag" type="xs:boolean"/>
+                    <xs:attribute name="largeEmailAttachBaseDir" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="JdbcDsInfo">
+                <xs:complexType>
+                    <xs:attribute name="username" type="xs:string"/>
+                    <xs:attribute name="password" type="xs:string"/>
+                    <xs:attribute name="ds" type="xs:string"/>
+                    <xs:attribute name="urlTemplate" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="DsRelateInfo">
+                <xs:complexType>
+                    <xs:attribute name="siteBaseDs" type="xs:string"/>
+                    <xs:attribute name="logBaseDs" type="xs:string"/>
+                    <xs:attribute name="memberLogBaseDs" type="xs:string"/>
+                    <xs:attribute name="saSiteBaseDs" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="EmailRelateInfo">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="EmailHostList">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="EmailHost"
+                                                maxOccurs="unbounded"> <!-- maxOccurs="unbounded" 对元素出现最大次数不限制 默认是1 对应的属性是minOccurs 默认值也是1 -->
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="EmailServer" maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                        <xs:attribute name="username" type="xs:string"/>
+                                                        <xs:attribute name="password" type="xs:string"/>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                            </xs:sequence>
+                                            <xs:attribute name="host" type="xs:string"/>
+                                            <xs:attribute name="port" type="xs:integer"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="errorBaseDir" type="xs:string"/>
+                    <xs:attribute name="globalEmail" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+
+            <xs:element name="SsoRelateInfo">
+                <xs:complexType>
+                    <xs:attribute name="serverUri" type="xs:string"/>
+                    <xs:attribute name="redisUri" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="ADRelateInfo">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="ShortLinkInfo">
+                            <xs:complexType>
+                                <xs:attribute name="redisUri" type="xs:string"/>
+                                <xs:attribute name="ds" type="xs:string"/>
+                                <xs:attribute name="baseName" type="xs:string"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="MonitorSDKRelateInfo">
+                <xs:complexType>
+                    <xs:attribute name="confFilePath" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="AppPushRelateInfo">
+                <xs:complexType>
+                    <xs:attribute name="iOSCertDir" type="xs:string"/>
+                    <xs:attribute name="syncCertTokenFilePath" type="xs:string"/>
+                    <xs:attribute name="ds" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="ResServerInfo">
+                <xs:complexType>
+                    <xs:attribute name="uri" type="xs:string"/>
+                    <xs:attribute name="clientIpLimits" type="xs:string"/>
+                    <xs:attribute name="serverIp" type="xs:string"/>
+                    <xs:attribute name="resStateFilePath" type="xs:string"/>
+                    <xs:attribute name="resConfPath" type="xs:string"/>
+                    <xs:attribute name="clientUris" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="ExportServerInfo">
+                <xs:complexType>
+                    <xs:attribute name="uri" type="xs:string"/>
+                    <xs:attribute name="ports" type="xs:string"/>
+                    <xs:attribute name="ipLimits" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="HotMapServerInfo">
+                <xs:complexType>
+                    <xs:attribute name="uri" type="xs:string"/>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="WebProjectInfoList">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="WebProjectInfo" maxOccurs="unbounded">
+                            <xs:complexType>
+                                <xs:attribute name="name" type="xs:string"/>
+                                <xs:attribute name="serverUri" type="xs:string"/>
+                                <xs:attribute name="dlServerUri" type="xs:string"/>
+                                <xs:attribute name="dlBaseDir" type="xs:string"/>
+                                <xs:attribute name="tempDir" type="xs:string"/>
+                                <xs:attribute name="resStateFilePath" type="xs:string"/>
+                                <xs:attribute name="resConfPath" type="xs:string"/>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+        </xs:all>
+    </xs:complexType>
+
+
+</xs:schema>

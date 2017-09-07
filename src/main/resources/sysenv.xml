@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+    xmlns 指定命名空间
+    xmlns:xsi:是指当前xml所要遵循的标签规范.
+    xsi:schemaLocation 指定的命名空间对应的验证文件，用来定义xml schema的地址
+ -->
+<sysenv xmlns="http://www.99click.com/schema/sysenv"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.99click.com/schema/sysenv
+        http://www.99click.com/schema/sysenv/sysenv.xsd">
+
+    <properties>
+
+        <tomcatBaseDir>D:/NewProject/apache-tomcat-8.5.15</tomcatBaseDir>
+        <sysDataDir>D:/NewProject/apache-tomcat-8.5.15/sysdata</sysDataDir>
+        <serverIp>192.168.12.35</serverIp>
+        <serverUri>http://192.168.12.35:8080</serverUri>
+        <dlServerUri>http://192.168.12.35:8080</dlServerUri>
+        <emailUsername>lixiaoming@lbsky.com</emailUsername>
+        <emailPassword>99click</emailPassword>
+
+        <jdbcDs>192.168.12.16</jdbcDs>
+        <jdbcPassword>123</jdbcPassword>
+        <shareServerUri>http://192.168.12.35:8080</shareServerUri>
+        <resServerIp>192.168.12.35</resServerIp>
+        <ssoRedisUri>http://192.168.12.16:6379/0</ssoRedisUri>
+        <shortLinkRedisUri>http://192.168.12.16:6379/6</shortLinkRedisUri>
+    </properties>
+
+
+    <!-- 本机的相关状态信息-->
+    <LocalStateInfo ip="${serverIp}" onlineFlag="false" dlServerFlag="true" testFlag="true"/>
+
+    <!-- 邮件相关的配置信息 -->
+    <EmailRelateInfo
+            errorBaseDir=""
+            globalEmail="${emailUsername}">
+        <EmailHostList>
+            <EmailHost host="smtp.lbsky.com" port="25">
+                <EmailServer username="${emailUsername}" password="${emailPassword}"/>
+            </EmailHost>
+        </EmailHostList>
+    </EmailRelateInfo>
+
+    <SsoRelateInfo
+            serverUri="${shareServerUri}/local_security"
+            redisUri="${ssoRedisUri}"
+    />
+
+    <ADRelateInfo>
+        <ShortLinkInfo redisUri="${shortLinkRedisUri}" ds="192.168.99.169" baseName="admonitor"/>
+    </ADRelateInfo>
+
+    <!--静态资源共享服务器配置信息-->
+    <ResServerInfo
+            uri="${shareServerUri}/local_reslab"
+            clientIpLimits="*"
+            serverIp="${resServerIp}"
+            resStateFilePath="${tomcatBaseDir}/res_state_base/reslab.resstate.xml"
+            resConfPath="WEB-INF/classes/sys.resconf.xml"
+            clientUris=""
+    />
+
+    <!--Highchart图片导出服务器配置信息-->
+    <ExportServerInfo
+            uri="${dlServerUri}/local_exporter"
+            ports="3013,3004,3005,3006,3007"
+            ipLimits="*"
+    />
+    <!--热点图插件配置信息-->
+    <HotMapServerInfo uri="${serverUri}/hotmap"/>
+
+    <!-- 数据库的配置信息 -->
+    <JdbcDsInfo username="root" password="${jdbcPassword}" ds="${jdbcDs}"
+                urlTemplate="jdbc:mysql://{0}:3306/adreport?useUnicode=true&amp;characterEncoding=ISO8859_1&amp;zeroDateTimeBehavior=convertToNull"/>
+
+    <DsRelateInfo siteBaseDs="192.168.99.75" logBaseDs="192.168.99.202" memberLogBaseDs="192.168.99.202"
+                  saSiteBaseDs="192.168.99.172"/>
+
+    <MonitorSDKRelateInfo confFilePath="${sysDataDir}/sdk_conf_base/sdkconf.xml"
+    />
+
+    <AppPushRelateInfo
+            iOSCertDir="${sysDataDir}/ioscert" syncCertTokenFilePath="${sysDataDir}/ioscert/sync-cert-token"
+            ds="192.168.99.178"
+    />
+
+    <!--普通web项目的配置信息-->
+    <WebProjectInfoList>
+
+        <WebProjectInfo name="siteflow"
+                        serverUri="${serverUri}/local_adreport"
+                        dlServerUri="${dlServerUri}/local_adreport"
+                        dlBaseDir="${sysDataDir}/dlreport_siteflow"
+                        tempDir="${sysDataDir}/temp_siteflow"
+                        resStateFilePath="${tomcatBaseDir}/res_state_base/siteflow.resstate.xml"
+                        resConfPath="WEB-INF/classes/siteflow.resconf.xml"
+
+        />
+
+        <WebProjectInfo name="siteapp"
+                        serverUri="${serverUri}/local_siteapp"
+                        dlServerUri="${dlServerUri}/local_siteapp"
+                        dlBaseDir="${sysDataDir}/dlreport_siteapp"
+                        tempDir="${sysDataDir}/temp_siteapp"
+                        resStateFilePath="${tomcatBaseDir}/res_state_base/siteapp.resstate.xml"
+                        resConfPath="WEB-INF/classes/sys.resconf.xml"
+        />
+
+        <WebProjectInfo name="sitereco"
+                        serverUri="${serverUri}/local_sitereco"
+                        dlServerUri="${dlServerUri}/local_sitereco"
+                        dlBaseDir="${sysDataDir}/dlreport_sitereco"
+                        tempDir="${sysDataDir}/temp_sitereco"
+                        resStateFilePath="${tomcatBaseDir}/res_state_base/sitereco.resstate.xml"
+                        resConfPath="WEB-INF/classes/sitereco.resconf.xml"
+        />
+
+        <WebProjectInfo name="sitechannel"
+                        serverUri="${serverUri}/local_sitechannel"
+                        dlServerUri="${dlServerUri}/local_sitechannel"
+                        dlBaseDir="${sysDataDir}/dlreport_sitechannel"
+                        tempDir="${sysDataDir}/temp_sitechannel"
+                        resStateFilePath="${tomcatBaseDir}/res_state_base/sitechannel.resstate.xml"
+                        resConfPath="WEB-INF/classes/sitechannel.resconf.xml"
+        />
+
+    </WebProjectInfoList>
+
+</sysenv>
+
+
